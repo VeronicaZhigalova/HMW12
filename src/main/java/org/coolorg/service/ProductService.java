@@ -11,6 +11,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+
     /**
      * Получить продукт по его уникальному идентификатору.
      *
@@ -18,7 +19,11 @@ public class ProductService {
      * @return {@link Optional}, содержащий продукт, если найден, или пустой {@link Optional}, если не найден.
      */
     public Optional<Product> getById(final int id) {
-        return null;
+        Optional<Product> product = getById(id);
+        if (product.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(new Product());
     }
 
     /**
@@ -28,6 +33,10 @@ public class ProductService {
      * @throws IllegalArgumentException Если продукт с таким идентификатором уже существует в репозитории.
      */
     public void createProduct(final Product product) {
+        if (getById(product.getId()).isPresent()) {
+            throw new IllegalArgumentException("Product with the same id already exists.");
+        }
+        productRepository.addProduct(product);
 
     }
 
@@ -38,6 +47,11 @@ public class ProductService {
      * @throws IllegalArgumentException Если продукт с указанным идентификатором не существует в репозитории.
      */
     public void removeProduct(final int id) {
+        Optional<Product> product = getById(id);
+        if (product.isEmpty()) {
+            throw new IllegalArgumentException("Product with id " + id + " does not exist.");
+        }
+        productRepository.removeProduct(product.get().getId());
 
     }
 }

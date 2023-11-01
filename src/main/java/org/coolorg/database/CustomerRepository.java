@@ -10,7 +10,7 @@ public class CustomerRepository {
 
     private final List<Customer> customers = new ArrayList<>();
 
-    public CustomerRepository() {
+    public CustomerRepository(Customer customerRepository) {
         // some test data
         customers.add(new Customer(1, "Bob"));
         customers.add(new Customer(2, "Alice"));
@@ -31,5 +31,4 @@ public class CustomerRepository {
     public void removeCustomer(int customerId) {
         customers.removeIf(customer -> customer.getId() == customerId);
     }
-
 }

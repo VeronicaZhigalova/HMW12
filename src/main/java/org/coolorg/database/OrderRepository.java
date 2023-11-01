@@ -1,6 +1,7 @@
 package org.coolorg.database;
 
 import org.coolorg.model.Order;
+import org.coolorg.service.OrderService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,10 @@ public class OrderRepository {
     private final List<Order> orders = new ArrayList<>();
 
     public OrderRepository() {
+
+    }
+
+    public OrderRepository(OrderService orderService) {
         // some test data
         orders.add(new Order(1, 1, 1));
         orders.add(new Order(2, 1, 2));
