@@ -59,7 +59,7 @@ public class CustomerServiceTest {
 
         when(customerRepository.getCustomerById(customer.getId())).thenReturn(Optional.empty());
 
-        customerRepository.addCustomer(new Customer());
+        customerService.createCustomer(customer);
     }
 
 
@@ -70,7 +70,7 @@ public class CustomerServiceTest {
 
         when(customerRepository.getCustomerById(customer.getId())).thenReturn(Optional.of(customer));
 
-        customerRepository.removeCustomer(customer.getId());
+        customerService.removeCustomer(customer.getId());
 
     }
 }
