@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class CustomerService {
 
-    private final CustomerService customerService;
+
 
     private final CustomerRepository customerRepository;
 
