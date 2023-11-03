@@ -30,9 +30,9 @@ public class OrderService {
      * @return {@link Optional}, содержащий заказ, если найден, или пустой {@link Optional}, если не найден.
      */
     public Optional<Order> getOrderById(int id) {
-        Optional <Order> order = orderRepository.getOrderById(id);
-            return order;
-        }
+        Optional<Order> order = orderRepository.getOrderById(id);
+        return order;
+    }
 
 
     /**

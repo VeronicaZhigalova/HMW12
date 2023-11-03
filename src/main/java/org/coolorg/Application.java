@@ -14,7 +14,6 @@ import org.coolorg.service.ProductService;
 public class Application {
 
 
-
     public static void main(String[] args) {
 
 
