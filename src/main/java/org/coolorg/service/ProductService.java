@@ -2,12 +2,14 @@ package org.coolorg.service;
 
 import lombok.RequiredArgsConstructor;
 import org.coolorg.database.ProductRepository;
+import org.coolorg.model.Order;
 import org.coolorg.model.Product;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ProductService {
+
 
     private final ProductRepository productRepository;
 
@@ -19,12 +21,9 @@ public class ProductService {
      * @return {@link Optional}, содержащий продукт, если найден, или пустой {@link Optional}, если не найден.
      */
     public Optional<Product> getById(final int id) {
-        Optional<Product> product = getById(id);
-        if (product.isEmpty()) {
-            return Optional.empty();
+            Optional <Product> product = productRepository.getProductById(id);
+            return product;
         }
-        return Optional.of(new Product());
-    }
 
     /**
      * Создать новый продукт и добавить его в репозиторий.

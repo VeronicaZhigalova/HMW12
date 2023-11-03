@@ -30,12 +30,10 @@ public class OrderService {
      * @return {@link Optional}, содержащий заказ, если найден, или пустой {@link Optional}, если не найден.
      */
     public Optional<Order> getOrderById(int id) {
-        Optional<Order> order = orderRepository.getOrderById(id);
-        if (order.isEmpty()) {
-            return Optional.empty();
+        Optional <Order> order = orderRepository.getOrderById(id);
+            return order;
         }
-        return Optional.of(new Order());
-    }
+
 
     /**
      * Получить список заказов, связанных с конкретным клиентом.
@@ -65,7 +63,7 @@ public class OrderService {
         for (Order order : orders) {
             Optional<Product> product = productRepository.getProductById(order.getProductId());
             if (product.isPresent()) {
-                totalPrice += (int) product.get().getPrice();
+                totalPrice += product.get().getPrice();
             }
         }
         return totalPrice;

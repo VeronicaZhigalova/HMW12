@@ -4,12 +4,17 @@ import lombok.Data;
 
 
 import org.coolorg.database.CustomerRepository;
+
 import org.coolorg.model.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
@@ -18,19 +23,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 
-@Data
 
+@ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
+
+
+    @Mock
+    private CustomerRepository customerRepository;
 
     private CustomerService customerService;
 
-
-    private CustomerRepository customerRepository;
-
     @BeforeEach
     void setUp() {
-        customerRepository = Mockito.mock(CustomerRepository.class);
-        customerService = new CustomerService(customerRepository);
+        customerService = new CustomerService(customerService,customerRepository);
     }
 
 

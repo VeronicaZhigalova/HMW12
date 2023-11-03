@@ -13,6 +13,8 @@ import org.coolorg.service.ProductService;
 
 public class Application {
 
+
+
     public static void main(String[] args) {
 
 
@@ -23,6 +25,7 @@ public class Application {
         CustomerService customerService = new CustomerService(customerRepository);
         OrderService orderService = new OrderService(orderRepository, productRepository, customerRepository);
         ProductService productService = new ProductService(productRepository);
+
 
         customerService.getById(1);
         customerService.createCustomer(new Customer(15, "John"));

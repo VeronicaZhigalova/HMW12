@@ -12,7 +12,13 @@ import java.util.Optional;
 
 public class CustomerService {
 
-    private final CustomerRepository repository;
+    private final CustomerService customerService;
+
+    private final CustomerRepository customerRepository;
+
+
+
+
 
 
     /**
@@ -22,12 +28,8 @@ public class CustomerService {
      * @return {@link Optional}, содержащий клиента, если найден, или пустой {@link Optional}, если не найден.
      */
     public Optional<Customer> getById(int id) {
-        Optional<Customer> customer = getById(id);
-        if (customer.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(new Customer());
-
+        Optional<Customer> customer = customerRepository.getCustomerById(id);
+        return customer;
     }
 
     /**
@@ -40,7 +42,7 @@ public class CustomerService {
         if (getById(customer.getId()).isPresent()) {
             throw new IllegalArgumentException("Customer with the same id already exists.");
         }
-        repository.addCustomer(customer);
+        customerRepository.addCustomer(customer);
     }
 
 
@@ -55,7 +57,7 @@ public class CustomerService {
         if (customer.isEmpty()) {
             throw new IllegalArgumentException("Customer with id " + id + " does not exist.");
         }
-        repository.removeCustomer(customer.get().getId());
+        customerRepository.removeCustomer(customer.get().getId());
     }
 }
 
