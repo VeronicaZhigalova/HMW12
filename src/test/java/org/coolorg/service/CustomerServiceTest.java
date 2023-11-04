@@ -1,6 +1,7 @@
 package org.coolorg.service;
 
 
+import lombok.Data;
 import org.coolorg.database.CustomerRepository;
 
 import org.coolorg.model.Customer;
@@ -17,18 +18,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
+@Data
 public class CustomerServiceTest {
 
 
     @Mock
     private CustomerRepository customerRepository;
-
-
     private CustomerService customerService;
 
     @BeforeEach
@@ -59,6 +60,17 @@ public class CustomerServiceTest {
         customerService.createCustomer(customer);
     }
 
+    @Test
+    void testCreateCustomerUserFound() {
+        Customer customer = new Customer(1, "Bob");
+
+        when(customerRepository.getCustomerById(customer.getId())).thenReturn(Optional.of(customer));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            customerService.createCustomer(customer);
+        });
+    }
+
 
     @Test
     void testRemoveCustomer() {
@@ -68,7 +80,18 @@ public class CustomerServiceTest {
         when(customerRepository.getCustomerById(customer.getId())).thenReturn(Optional.of(customer));
 
         customerService.removeCustomer(customer.getId());
+    }
 
+    @Test
+    void testRemoveCustomerIsNotFound() {
+
+        Customer customer = new Customer(1, "John");
+
+        when(customerRepository.getCustomerById(customer.getId())).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            customerService.removeCustomer(customer.getId());
+        });
     }
 }
 

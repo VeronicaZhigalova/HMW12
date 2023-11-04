@@ -2,9 +2,9 @@ package org.coolorg.service;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.coolorg.database.CustomerRepository;
 import org.coolorg.database.OrderRepository;
 import org.coolorg.database.ProductRepository;
+import org.coolorg.model.Customer;
 import org.coolorg.model.Order;
 import org.coolorg.model.Product;
 
@@ -20,7 +20,7 @@ public class OrderService {
 
     private final ProductRepository productRepository;
 
-    private final CustomerRepository repository;
+    private final CustomerService customerService;
 
 
     /**
@@ -42,13 +42,15 @@ public class OrderService {
      * @return Список заказов, связанных с клиентом.
      */
     public List<Order> getOrdersByCustomer(int customerId) {
-        List<Order> customer = orderRepository.getOrdersByCustomer(customerId);
-        if (!customer.isEmpty()) {
-            return customer;
+        Optional<Customer> order = customerService.getById(customerId);
+        if (order.isPresent()) {
+            return orderRepository.getOrdersByCustomer(customerId);
         }
 
         return new ArrayList<>();
     }
+
+
 
 
     /**

@@ -22,7 +22,7 @@ public class Application {
         ProductRepository productRepository = new ProductRepository();
 
         CustomerService customerService = new CustomerService(customerRepository);
-        OrderService orderService = new OrderService(orderRepository, productRepository, customerRepository);
+        OrderService orderService = new OrderService(orderRepository, productRepository, customerService);
         ProductService productService = new ProductService(productRepository);
 
 

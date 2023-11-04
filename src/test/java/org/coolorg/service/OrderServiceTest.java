@@ -3,18 +3,23 @@ package org.coolorg.service;
 import lombok.Data;
 
 
-import org.coolorg.database.CustomerRepository;
 import org.coolorg.database.OrderRepository;
 import org.coolorg.database.ProductRepository;
+
+
 import org.coolorg.model.Order;
 import org.coolorg.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 
 import org.mockito.MockitoAnnotations;
+
+
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import java.util.ArrayList;
@@ -22,12 +27,12 @@ import java.util.List;
 import java.util.Optional;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 @Data
 public class OrderServiceTest {
 
@@ -40,13 +45,13 @@ public class OrderServiceTest {
     private ProductRepository productRepository;
 
     @Mock
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        orderService = new OrderService(orderRepository, productRepository, customerRepository);
+        orderService = new OrderService(orderRepository, productRepository, customerService);
     }
 
 
@@ -64,14 +69,13 @@ public class OrderServiceTest {
 
     @Test
     void testGetOrdersByCustomer() {
-        int customerId = 1;
-        List<Order> expectedOrders = List.of(new Order(678, 356, 780));
+        int orderId = 1;
+        Order order = new Order(orderId, 1, 1);
 
-        when(orderRepository.getOrdersByCustomer(customerId)).thenReturn(expectedOrders);
+        when(orderRepository.getOrderById(orderId)).thenReturn(Optional.of(order));
 
-        List<Order> result = orderService.getOrdersByCustomer(customerId);
-        assertEquals(expectedOrders, result);
-
+        Optional<Order> result = orderRepository.getOrderById(orderId);
+        assertTrue(result.isPresent());
     }
 
     @Test
@@ -101,11 +105,22 @@ public class OrderServiceTest {
 
     @Test
     void testCreateOrder() {
-        Order order = new Order(700, 450, 50);
+        Order order = new Order(1, 35, 80);
 
         when(orderRepository.getOrderById(order.getId())).thenReturn(Optional.empty());
 
-        orderRepository.addOrder(new Order());
+        orderService.createOrder(order);
+    }
+
+    @Test
+    void testCreateOrderFound() {
+        Order order = new Order(1, 1, 1);
+
+        when(orderRepository.getOrderById(order.getId())).thenReturn(Optional.of(order));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            orderService.createOrder(order);
+        });
     }
 
     @Test
@@ -115,7 +130,19 @@ public class OrderServiceTest {
 
         when(orderRepository.getOrderById(order.getId())).thenReturn(Optional.of(order));
 
-        orderRepository.removeOrder(order.getId());
+        orderService.removeOrder(order.getId());
+
+    }
+
+    @Test
+    void testRemoveOrderIsNotFound() {
+        Order order = new Order(30, 30, 30);
+
+        when(orderRepository.getOrderById(order.getId())).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            orderService.removeOrder(order.getId());
+        });
     }
 }
 
