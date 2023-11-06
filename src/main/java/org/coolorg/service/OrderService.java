@@ -42,8 +42,8 @@ public class OrderService {
      * @return Список заказов, связанных с клиентом.
      */
     public List<Order> getOrdersByCustomer(int customerId) {
-        Optional<Customer> order = customerService.getById(customerId);
-        if (order.isPresent()) {
+        Optional<Customer> customer = customerService.getById(customerId);
+        if (customer.isPresent()) {
             return orderRepository.getOrdersByCustomer(customerId);
         }
 
